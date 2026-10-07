@@ -115,14 +115,19 @@ jobs:
             build/eMMC.burn.img
 
       - name: Release
-        run: |
+       run: |
           time="${{ github.event.head_commit.timestamp }}"
           sha="${GITHUB_SHA:0:8}"
           tag="build-$(date +'%Y%m%d-%H%M' -d "$time")"
           message="Auto-Build $(date +'%Y-%m-%d %H:%M' -d "$time")"
-          hub release create  -t "$GITHUB_SHA" "$tag" -m "$message" \
-            $(for a in build/*.bin; do echo -a $a; done) \
-            -a build/resource.img \
-            -a build/eMMC.burn.img
+          bin_files=()
+          for f in build/*.bin; do
+            [ -f "$f" ] && bin_files+=("$f")
+          done
+          gh release create "$tag" "${bin_files[@]}" build/resource.img build/eMMC.burn.img \
+            --title "$GITHUB_SHA" \
+            --notes "$message" \
+            --prerelease \
+            --clobber
         env:
           GITHUB_TOKEN: ${{ github.token }}
