@@ -13,8 +13,9 @@ jobs:
 
       - name: Install dependencies
         run: |
+          sudo dpkg --add-architecture i386
           sudo apt update
-          sudo apt install make imagemagick fonts-dejavu
+          sudo apt install make imagemagick gcc git bison flex libssl-dev fonts-dejavu xz-utils libz1:i386 libc6:i386
 
       - name: Download toolchain
         run: |
