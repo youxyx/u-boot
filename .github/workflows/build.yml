@@ -14,7 +14,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install make imagemagick ttf-dejavu
+          sudo apt install make imagemagick fonts-dejavu
 
       - name: Download toolchain
         run: |
