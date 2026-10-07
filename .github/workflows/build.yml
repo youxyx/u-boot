@@ -124,10 +124,12 @@ jobs:
           for f in build/*.bin; do
             [ -f "$f" ] && bin_files+=("$f")
           done
-          gh release create "$tag" "${bin_files[@]}" build/resource.img build/eMMC.burn.img \
-            --title "$GITHUB_SHA" \
-            --notes "$message" \
-            --prerelease \
-            --clobber
+          if ! gh release view "$tag" >/dev/null 2>&1; then
+            gh release create "$tag" \
+              --title "$GITHUB_SHA" \
+              --notes "$message" \
+              --prerelease
+          fi
+          gh release upload "$tag" "${bin_files[@]}" build/resource.img build/eMMC.burn.img --clobber
         env:
           GH_TOKEN: ${{ github.token }}
