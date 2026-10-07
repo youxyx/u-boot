@@ -115,7 +115,7 @@ jobs:
             build/eMMC.burn.img
 
       - name: Release
-       run: |
+        run: |
           time="${{ github.event.head_commit.timestamp }}"
           sha="${GITHUB_SHA:0:8}"
           tag="build-$(date +'%Y%m%d-%H%M' -d "$time")"
@@ -130,4 +130,4 @@ jobs:
             --prerelease \
             --clobber
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
